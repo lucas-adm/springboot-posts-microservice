@@ -50,4 +50,28 @@ public class EmailService {
         }
     }
 
+    @Transactional
+    public void sendRecoverEmail(EmailEntity email) {
+        try {
+            email.setSendDateEmail(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+            email.setEmailFrom(emailFrom);
+
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, false, "utf-8");
+
+            helper.setTo(email.getEmailTo());
+            helper.setSubject(email.getSubject());
+            helper.setFrom(emailFrom);
+
+            helper.setText(email.getText(), true);
+
+            emailSender.send(message);
+            email.setStatus(Status.SENT);
+        } catch (MailException | MessagingException e) {
+            email.setStatus(Status.ERROR);
+        } finally {
+            emailRepository.save(email);
+        }
+    }
+
 }

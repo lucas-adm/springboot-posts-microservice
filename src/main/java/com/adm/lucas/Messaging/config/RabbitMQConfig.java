@@ -13,9 +13,17 @@ public class RabbitMQConfig {
     @Value("${broker.queue.email.name}")
     private String queue;
 
+    @Value("${broker.queue.recover.name}")
+    private String recoverQueue;
+
     @Bean
     public Queue queue() {
         return new Queue(queue, true);
+    }
+
+    @Bean
+    public Queue recoverQueue() {
+        return new Queue(recoverQueue, true);
     }
 
     @Bean

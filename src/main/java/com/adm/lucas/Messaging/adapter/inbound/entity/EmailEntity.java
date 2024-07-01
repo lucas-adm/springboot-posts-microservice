@@ -36,4 +36,10 @@ public class EmailEntity {
         this.text = text;
     }
 
+    public EmailEntity(String emailTo, String subject, String text) {
+        this.emailTo = emailTo;
+        this.subject = subject;
+        this.text = text;
+    }
+
 }

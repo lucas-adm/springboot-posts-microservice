@@ -1,6 +1,7 @@
 package com.adm.lucas.Messaging.adapter.outbound.consumers;
 
 import com.adm.lucas.Messaging.adapter.inbound.dtos.in.EmailDTO;
+import com.adm.lucas.Messaging.adapter.inbound.dtos.in.RecoverDTO;
 import com.adm.lucas.Messaging.adapter.inbound.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -17,6 +18,12 @@ public class EmailConsumer {
     public void listenEmailQueue(@Payload EmailDTO dto) {
         var email = dto.toEmail();
         service.sendEmail(email);
+    }
+
+    @RabbitListener(queues = "${broker.queue.recover.name}")
+    public void listenRecoverQueue(@Payload RecoverDTO dto) {
+        var email = dto.toEmail();
+        service.sendRecoverEmail(email);
     }
 
 }
